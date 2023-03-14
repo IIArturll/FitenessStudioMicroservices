@@ -1,0 +1,49 @@
+version: '3.5'
+services:
+  pgadmin:
+    build: pgadmin
+    image: fitness_pgadmin:1.0.0
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: cherv@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "82:80"
+  user_db:
+    build: userDB
+    image: fitness_user_db:1.0.0
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+  product_db:
+    build: productDB
+    image: fitness_product_db:1.0.0
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+  swagger-ui:
+    build: swagger-ui
+    image: fitness_swagger-ui:1.0.0
+    ports:
+      - "81:8080"
+  userService:
+    build: userService
+    image: fitness_user_service:1.0.0
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user_db:5432/
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root   
+  productService:
+    build: productService
+    image: fitness_product_service:1.0.0
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://product_db:5432/
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+  proxy:
+    build: proxy
+    image: fitness_image:1.0.0
+    ports:
+      - "80:80"

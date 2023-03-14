@@ -1,0 +1,22 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "fitness",
+      "Group": "users",
+      "Port": 5432,
+      "Username": "root",
+      "Host": "user_db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    },
+	"2": {
+	  "Name": "fitness",
+	  "Group": "product",
+	  "Port": 5432,
+	  "Username": "root",
+	  "Host": "product_db",
+	  "SSLMode": "prefer",
+	  "MaintenanceDB": "postgres"
+	}
+  }
+}
