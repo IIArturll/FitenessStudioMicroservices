@@ -1,18 +1,21 @@
 package it.academy.productservice.security;
 
+import it.academy.productservice.core.properties.UserDetailsServiceProperty;
 import it.academy.productservice.core.userdetails.MyUserDetails;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-
+@Component
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final String url = "http://userService:8080/users/userDetails/mail/";
+    private final UserDetailsServiceProperty serviceProperty;
 
-    public MyUserDetailsService() {
+    public MyUserDetailsService(UserDetailsServiceProperty serviceProperty) {
+        this.serviceProperty = serviceProperty;
     }
 
     @Override
@@ -22,7 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
         HttpEntity<MyUserDetails> entity = new HttpEntity<>(headers);
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         ResponseEntity<MyUserDetails> response = restTemplate.exchange(
-                url + username,
+                serviceProperty.getUrl() + username,
                 HttpMethod.GET,
                 entity,
                 MyUserDetails.class
