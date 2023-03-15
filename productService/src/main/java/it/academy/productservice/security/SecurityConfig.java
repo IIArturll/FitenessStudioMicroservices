@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/recipe/").authenticated()
                 .requestMatchers(HttpMethod.POST, "/recipe/").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT,"/recipe/{uuid}/dt_update/{dt_update}").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .anyRequest().denyAll()
         );
 
         return http.build();
@@ -57,5 +57,5 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
 }
