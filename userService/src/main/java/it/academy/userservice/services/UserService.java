@@ -8,9 +8,11 @@ import it.academy.userservice.repositories.api.IUserRepository;
 import it.academy.userservice.repositories.entity.UserEntity;
 import it.academy.userservice.repositories.entity.UserRoleEntity;
 import it.academy.userservice.repositories.entity.UserStatusEntity;
+import it.academy.userservice.security.MyUserDetailsService;
 import it.academy.userservice.services.api.IUserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -20,10 +22,14 @@ import java.util.UUID;
 public class UserService implements IUserService {
     private final IUserRepository repository;
     private final UserConverter converter;
+    private final MyUserDetailsService userDetailsService;
 
-    public UserService(IUserRepository repository, UserConverter converter) {
+    public UserService(IUserRepository repository,
+                       UserConverter converter,
+                       MyUserDetailsService userDetailsService) {
         this.repository = repository;
         this.converter = converter;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -60,5 +66,10 @@ public class UserService implements IUserService {
     @Override
     public Page<UserDTO> getPage(Pageable pageable) {
         return repository.findAll(pageable).map(converter::convertToUserDTO);
+    }
+
+    @Override
+    public UserDetails getUserDetails(String mail) {
+        return userDetailsService.loadUserByUsername(mail);
     }
 }

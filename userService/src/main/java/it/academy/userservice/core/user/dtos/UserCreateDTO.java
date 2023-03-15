@@ -1,6 +1,5 @@
 package it.academy.userservice.core.user.dtos;
 
-import it.academy.userservice.core.exceptions.MultipleErrorResponse;
 import it.academy.userservice.core.user.dtos.enums.UserRole;
 import it.academy.userservice.core.user.dtos.enums.UserStatus;
 import jakarta.validation.constraints.NotBlank;

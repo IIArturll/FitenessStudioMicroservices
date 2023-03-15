@@ -3,14 +3,12 @@ package it.academy.userservice.controllers;
 import it.academy.userservice.core.exceptions.SingleErrorResponse;
 import it.academy.userservice.core.user.dtos.UserCreateDTO;
 import it.academy.userservice.core.user.dtos.UserDTO;
-import it.academy.userservice.repositories.entity.UserEntity;
 import it.academy.userservice.security.MyUserDetailsService;
 import it.academy.userservice.services.api.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +53,6 @@ public class UserController {
 
     @GetMapping("/userDetails/mail/{mail}")
     public ResponseEntity<UserDetails> getUserDetails(@PathVariable("mail") String mail) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(mail);
-        return ResponseEntity.status(200).body(userDetails);
+        return ResponseEntity.status(200).body(service.getUserDetails(mail));
     }
 }

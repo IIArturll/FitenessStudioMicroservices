@@ -12,6 +12,4 @@ public interface IPersonalAccountRepository extends Repository<UserEntity, UUID>
 
     void save(UserEntity entity);
 
-    Optional<UserEntity> findById(UUID uuid);
-
 }

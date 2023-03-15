@@ -1,6 +1,5 @@
 package it.academy.userservice.core.user.dtos;
 
-import it.academy.userservice.core.exceptions.MultipleErrorResponse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
@@ -18,7 +17,7 @@ public class UserRegistrationDTO {
     public UserRegistrationDTO() {
     }
 
-    public UserRegistrationDTO(String mail, String fio, String password) throws MultipleErrorResponse {
+    public UserRegistrationDTO(String mail, String fio, String password) {
         this.mail = mail;
         this.fio = fio;
         this.password = password;
