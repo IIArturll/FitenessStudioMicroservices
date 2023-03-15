@@ -43,7 +43,7 @@ public class RecipeService implements IRecipeService {
     public void update(UUID uuid, Instant dtUpdate, RecipeForCUDTO recipe)
             throws SingleErrorResponse {
         RecipeEntity entity = repository.findById(uuid).orElseThrow(() ->
-                new SingleErrorResponse("err",
+                new SingleErrorResponse("error",
                         "recipe with this id: " + uuid + " not found"));
         if (entity.getDtUpdate().toEpochMilli() != dtUpdate.toEpochMilli()) {
             throw new SingleErrorResponse("err",

@@ -48,27 +48,30 @@ public class PersonalAccountService implements IPersonalAccountService {
     @Override
     public void verified(String code, String mail) throws SingleErrorResponse {
         UserEntity user = repository.findByMail(mail).orElseThrow(() ->
-                new SingleErrorResponse("no such element", "unknown mail"));
+                new SingleErrorResponse("error", "user with this mail: " + mail
+                        + " not found"));
         if (user.getUuid().toString().equals(code)) {
             user.setStatus(new UserStatusEntity(UserStatus.ACTIVATED));
             repository.save(user);
         } else {
-            throw new SingleErrorResponse("NO", "incorrect code");
+            throw new SingleErrorResponse("error", "invalid verification code");
         }
     }
 
     @Override
     public String login(UserLoginDTO user) throws SingleErrorResponse {
         UserEntity entity = repository.findByMail(user.getMail()).orElseThrow(() ->
-                new SingleErrorResponse("err", "user with email: " + user.getMail() + " not found"));
+                new SingleErrorResponse("error", "user with email: " + user.getMail()
+                        + " not found"));
         if (entity.getStatus().getStatus() == UserStatus.WAITING_ACTIVATION) {
-            throw new SingleErrorResponse("err", "activate account");
+            throw new SingleErrorResponse("error", "authorization is not available," +
+                    " the account is not verified");
         }
 
         if (encoder.matches(user.getPassword(), entity.getPassword())) {
             return tokenUtil.generateAccessToken(user.getMail());
         } else {
-            throw new SingleErrorResponse("err", "invalid password");
+            throw new SingleErrorResponse("error", "invalid password");
         }
     }
 

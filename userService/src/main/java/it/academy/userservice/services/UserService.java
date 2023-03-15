@@ -43,7 +43,7 @@ public class UserService implements IUserService {
     @Override
     public UserDTO get(UUID uuid) throws SingleErrorResponse {
         UserEntity user = repository.findById(uuid).orElseThrow(() ->
-                new SingleErrorResponse("NoSuchElement", "unknown uuid"));
+                new SingleErrorResponse("error", "invalid user uuid"));
         return converter.convertToUserDTO(user);
     }
 
@@ -51,7 +51,7 @@ public class UserService implements IUserService {
     public void update(UUID uuid, Instant dtUpdate, UserCreateDTO createDTO)
             throws SingleErrorResponse {
         UserEntity user = repository.findById(uuid).orElseThrow(() ->
-                new SingleErrorResponse("NoSuchElement", "unknown uuid"));
+                new SingleErrorResponse("error", "invalid user uuid"));
         if (dtUpdate.toEpochMilli() != user.getDtUpdate().toEpochMilli()) {
             throw new SingleErrorResponse("error", "user has already been updated");
         }

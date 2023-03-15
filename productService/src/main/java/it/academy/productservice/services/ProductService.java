@@ -39,9 +39,9 @@ public class ProductService implements IProductService {
     @Override
     public void update(UUID uuid, Instant dtUpdate, ProductDTO product) throws SingleErrorResponse {
         ProductEntity productEntity = repository.findById(uuid).orElseThrow(() ->
-                new SingleErrorResponse("err", "no product with this id : " + uuid));
+                new SingleErrorResponse("error", "there is no product with this id : " + uuid));
         if (productEntity.getDtUpdate().toEpochMilli() != dtUpdate.toEpochMilli()) {
-            throw new SingleErrorResponse("err", "product already has been update");
+            throw new SingleErrorResponse("error", "product already has been update");
         }
         productEntity.setTitle(product.getTitle());
         productEntity.setWeight(product.getWeight());
@@ -55,6 +55,6 @@ public class ProductService implements IProductService {
     @Override
     public ProductEntity find(UUID uuid) throws SingleErrorResponse {
         return repository.findById(uuid).orElseThrow(() ->
-                new SingleErrorResponse("err", "no product with this id : " + uuid));
+                new SingleErrorResponse("error", "there is no product with this id : " + uuid));
     }
 }
