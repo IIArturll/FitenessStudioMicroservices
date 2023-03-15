@@ -42,7 +42,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/product/").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/product/").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/product/").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/product/{uuid}/dt_update/{dt_update}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/recipe/").authenticated()
                 .requestMatchers(HttpMethod.POST, "/recipe/").hasRole("ADMIN")
@@ -57,5 +57,5 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    
 }

@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
@@ -46,7 +47,10 @@ public class SecurityConfig {
                 .requestMatchers("/users/me").authenticated()
                 .requestMatchers("/users").hasRole("ADMIN")
                 .requestMatchers("/users/{uuid}/dt_update/{dt_update}").hasRole("ADMIN")
-                .requestMatchers("/users/userDetails/mail/{mail}").permitAll()
+                .requestMatchers("/users/userDetails/mail/{mail}").access(
+                        new WebExpressionAuthorizationManager(
+                                "hasIpAddress('productService')"
+                        ))
                 .anyRequest().denyAll()
         );
 
