@@ -3,7 +3,6 @@ package it.academy.userservice.controllers;
 import it.academy.userservice.core.exceptions.SingleErrorResponse;
 import it.academy.userservice.core.user.dtos.UserCreateDTO;
 import it.academy.userservice.core.user.dtos.UserDTO;
-import it.academy.userservice.security.MyUserDetailsService;
 import it.academy.userservice.services.api.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -19,12 +18,9 @@ import java.util.UUID;
 @RequestMapping("/users")
 public class UserController {
     private final IUserService service;
-    private final MyUserDetailsService userDetailsService;
 
-    public UserController(IUserService service,
-                          MyUserDetailsService userDetailsService) {
+    public UserController(IUserService service) {
         this.service = service;
-        this.userDetailsService = userDetailsService;
     }
 
     @PostMapping

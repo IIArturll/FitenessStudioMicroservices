@@ -30,22 +30,26 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(
                         (request, response, ex) -> {
-                            response.sendError(
-                                    HttpServletResponse.SC_UNAUTHORIZED,
-                                    ex.getMessage());
+                            response.setStatus(
+                                    HttpServletResponse.SC_UNAUTHORIZED
+                            );
                         }
+                ).accessDeniedHandler(((request, response, ex) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                        })
                 ).and();
+
 
         http.addFilterBefore(
                 jwtFilter,
                 UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/product/").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/product/").authenticated()
+                .requestMatchers(HttpMethod.POST, "/product").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/product").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/product/{uuid}/dt_update/{dt_update}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/recipe/").authenticated()
-                .requestMatchers(HttpMethod.POST, "/recipe/").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/recipe").authenticated()
+                .requestMatchers(HttpMethod.POST, "/recipe").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT,"/recipe/{uuid}/dt_update/{dt_update}").hasRole("ADMIN")
                 .anyRequest().denyAll()
         );

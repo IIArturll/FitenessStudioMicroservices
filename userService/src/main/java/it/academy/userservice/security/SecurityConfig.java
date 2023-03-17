@@ -3,6 +3,7 @@ package it.academy.userservice.security;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,10 +31,13 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(
                         (request, response, ex) -> {
-                            response.sendError(
-                                    HttpServletResponse.SC_UNAUTHORIZED,
-                                    ex.getMessage());
+                            response.setStatus(
+                                    HttpServletResponse.SC_UNAUTHORIZED
+                            );
                         }
+                ).accessDeniedHandler(((request, response, ex) -> {
+                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    })
                 ).and();
 
         http.addFilterBefore(
@@ -41,16 +45,15 @@ public class SecurityConfig {
                 UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/users/registration").permitAll()
-                .requestMatchers("/users/verification").permitAll()
-                .requestMatchers("/users/login").permitAll()
-                .requestMatchers("/users/me").authenticated()
-                .requestMatchers("/users").hasRole("ADMIN")
-                .requestMatchers("/users/{uuid}/dt_update/{dt_update}").hasRole("ADMIN")
-                .requestMatchers("/users/userDetails/mail/{mail}").access(
+                .requestMatchers(HttpMethod.POST,"/users/registration").permitAll()
+                .requestMatchers(HttpMethod.GET,"/users/verification").permitAll()
+                .requestMatchers(HttpMethod.POST,"/users/login").permitAll()
+                .requestMatchers(HttpMethod.GET,"/users/me").authenticated()
+                .requestMatchers(HttpMethod.GET,"/users/userDetails/mail/{mail}").access(
                         new WebExpressionAuthorizationManager(
                                 "hasIpAddress('productService')"
                         ))
+                .requestMatchers("/users/**").hasRole("ADMIN")
                 .anyRequest().denyAll()
         );
 

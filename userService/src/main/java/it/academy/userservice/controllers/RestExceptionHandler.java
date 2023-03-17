@@ -32,6 +32,11 @@ public class RestExceptionHandler {
     public ResponseEntity<SingleErrorResponse> repeat(SQLException e) {
         int indStart = e.getMessage().lastIndexOf("Подробности:");
         String message = e.getMessage().substring(indStart + 13);
-        return ResponseEntity.status(400).body(new SingleErrorResponse("err", message));
+        return ResponseEntity.status(400).body(new SingleErrorResponse("error", message));
+    }
+
+    @ExceptionHandler(value = Throwable.class)
+    public ResponseEntity<SingleErrorResponse> allErrorsHandler(Throwable e) {
+        return ResponseEntity.status(500).body(new SingleErrorResponse("server error", e.getMessage()));
     }
 }

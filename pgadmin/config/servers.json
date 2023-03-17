@@ -17,6 +17,15 @@
 	  "Host": "product_db",
 	  "SSLMode": "prefer",
 	  "MaintenanceDB": "postgres"
+	},
+	"3":{
+	  "Name": "fitness",
+	  "Group": "verification",
+	  "Port": 5432,
+	  "Username": "root",
+	  "Host": "mail_db",
+	  "SSLMode": "prefer",
+	  "MaintenanceDB": "postgres"
 	}
   }
 }

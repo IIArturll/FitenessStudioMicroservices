@@ -8,7 +8,7 @@ import it.academy.userservice.core.user.dtos.UserRegistrationDTO;
 
 public interface IPersonalAccountService {
 
-    void register(UserRegistrationDTO user);
+    void register(UserRegistrationDTO user) throws SingleErrorResponse;
 
     void verified(String code, String mail) throws SingleErrorResponse;
 

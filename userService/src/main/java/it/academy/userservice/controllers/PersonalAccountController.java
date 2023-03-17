@@ -1,6 +1,5 @@
 package it.academy.userservice.controllers;
 
-import it.academy.userservice.core.exceptions.MultipleErrorResponse;
 import it.academy.userservice.core.exceptions.SingleErrorResponse;
 import it.academy.userservice.core.user.dtos.UserDTO;
 import it.academy.userservice.core.user.dtos.UserLoginDTO;
@@ -20,7 +19,7 @@ public class PersonalAccountController {
     }
 
     @PostMapping(path = "/registration")
-    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDTO user) throws MultipleErrorResponse {
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDTO user) throws SingleErrorResponse {
         service.register(user);
         return ResponseEntity.status(201).build();
     }

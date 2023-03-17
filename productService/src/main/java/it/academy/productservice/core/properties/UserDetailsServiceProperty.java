@@ -1,11 +1,10 @@
 package it.academy.productservice.core.properties;
 
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Component
+@ConfigurationProperties(prefix = "userdetailservice")
 public class UserDetailsServiceProperty {
-    private String url = "http://userService:8080/users/userDetails/mail/";
-
+    private String url;
     public String getUrl() {
         return url;
     }

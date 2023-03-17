@@ -1,11 +1,11 @@
 package it.academy.productservice.core.properties;
 
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Component
+@ConfigurationProperties(prefix = "token")
 public class JwtProperty {
-    private String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
-    private String jwtIssuer = "ITAcademy";
+    private String jwtSecret;
+    private String jwtIssuer;
 
     public String getJwtSecret() {
         return jwtSecret;

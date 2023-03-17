@@ -9,7 +9,6 @@ import it.academy.userservice.core.user.dtos.enums.UserStatus;
 import it.academy.userservice.repositories.entity.UserEntity;
 import it.academy.userservice.repositories.entity.UserRoleEntity;
 import it.academy.userservice.repositories.entity.UserStatusEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

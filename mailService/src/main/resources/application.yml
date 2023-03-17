@@ -1,0 +1,39 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    username: <mail_username>
+    password: <mail_password>
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        smtps:
+          trust: smtp.gmail.com
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: <database_username>
+    password: <database_password>
+    url: <database_url>
+
+org:
+  jobrunr:
+    background-job-server:
+      enabled: true
+    dashboard:
+      enabled: true
+      port: 8000
+    miscellaneous:
+      allow-anonymous-data-usage: false
+    jobs:
+      retry-back-off-time-seed: 1
+    database:
+      table-prefix: fitness
+
+email:
+  fromAddress: <fromAddress>
+  url: <url>
+  subject: <subject>

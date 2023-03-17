@@ -4,5 +4,11 @@ spring:
     username: <database_username>
     password: <database_password>
     url: <database_url>
-server:
-  port: 8080
+
+email:
+  sendUrl: <sendurl>
+  verifyUrl: <verifyurl>
+
+token:
+  jwtSecret: <jwt_secret>
+  jwtIssuer: <jwt_issuer>
