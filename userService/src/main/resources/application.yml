@@ -1,15 +1,15 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres #<database_username>
-    password: 1 #<database_password>
-    url: jdbc:postgresql://localhost:5432/db #<database_url>
+    username: <database_username>
+    password: <database_password>
+    url: <database_url>
   kafka:
-    bootstrap-servers: artur:9092
+    bootstrap-servers: <server>
 email:
   sendUrl: <sendurl>
   verifyUrl: <verifyurl>
 
 token:
-  jwtSecret: secret #<jwt_secret>
-  jwtIssuer: ITAcademy #<jwt_issuer>
+  jwtSecret: <jwt_secret>
+  jwtIssuer: <jwt_issuer>

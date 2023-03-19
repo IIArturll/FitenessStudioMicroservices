@@ -1,6 +1,6 @@
 spring:
   kafka:
-    bootstrap-servers: artur:9092
+    bootstrap-servers: <server>
   datasource:
     driver-class-name: org.postgresql.Driver
     url: <database_url>
