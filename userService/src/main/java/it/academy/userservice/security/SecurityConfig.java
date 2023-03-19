@@ -31,9 +31,7 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(
                         (request, response, ex) -> {
-                            response.setStatus(
-                                    HttpServletResponse.SC_UNAUTHORIZED
-                            );
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         }
                 ).accessDeniedHandler(((request, response, ex) -> {
                         response.setStatus(HttpServletResponse.SC_FORBIDDEN);

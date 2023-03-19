@@ -9,23 +9,32 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres"
     },
-	"2": {
-	  "Name": "fitness",
-	  "Group": "product",
-	  "Port": 5432,
-	  "Username": "root",
-	  "Host": "product_db",
-	  "SSLMode": "prefer",
-	  "MaintenanceDB": "postgres"
-	},
-	"3":{
-	  "Name": "fitness",
-	  "Group": "verification",
-	  "Port": 5432,
-	  "Username": "root",
-	  "Host": "mail_db",
-	  "SSLMode": "prefer",
-	  "MaintenanceDB": "postgres"
-	}
+    "2": {
+      "Name": "fitness",
+      "Group": "product",
+      "Port": 5432,
+      "Username": "root",
+      "Host": "product_db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    },
+    "3":{
+      "Name": "fitness",
+      "Group": "verification",
+      "Port": 5432,
+      "Username": "root",
+      "Host": "mail_db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    },
+    "4":{
+      "Name": "fitness",
+      "Group": "audit",
+      "Port": 5432,
+      "Username": "root",
+      "Host": "audit_db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    }
   }
 }

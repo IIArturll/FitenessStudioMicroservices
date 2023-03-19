@@ -1,6 +1,5 @@
 package it.academy.productservice.core.nutrition.mappers;
 
-import it.academy.productservice.core.exceptions.SingleErrorResponse;
 import it.academy.productservice.core.nutrition.dtos.ProductCompositionDTO;
 import it.academy.productservice.core.nutrition.dtos.RecipeDTO;
 import it.academy.productservice.core.nutrition.dtos.RecipeForCUDTO;
@@ -23,7 +22,7 @@ public class RecipeConverter {
         this.productConverter = productConverter;
     }
 
-    public RecipeEntity convertToRecipeEntity(RecipeForCUDTO recipeDTO) throws SingleErrorResponse {
+    public RecipeEntity convertToRecipeEntity(RecipeForCUDTO recipeDTO) {
         RecipeEntity entity = new RecipeEntity();
         entity.setTitle(recipeDTO.getTitle());
         List<ProductModelEntity> list = new ArrayList<>();

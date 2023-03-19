@@ -1,6 +1,5 @@
 package it.academy.userservice.controllers;
 
-import it.academy.userservice.core.exceptions.SingleErrorResponse;
 import it.academy.userservice.core.user.dtos.UserDTO;
 import it.academy.userservice.core.user.dtos.UserLoginDTO;
 import it.academy.userservice.core.user.dtos.UserRegistrationDTO;
@@ -19,25 +18,25 @@ public class PersonalAccountController {
     }
 
     @PostMapping(path = "/registration")
-    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDTO user) throws SingleErrorResponse {
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationDTO user) {
         service.register(user);
         return ResponseEntity.status(201).build();
     }
 
     @GetMapping(path = "/verification")
     public ResponseEntity<?> verified(@RequestParam(value = "code") String code,
-                                      @RequestParam(value = "mail") String mail) throws SingleErrorResponse {
+                                      @RequestParam(value = "mail") String mail) {
         service.verified(code, mail);
         return ResponseEntity.status(200).build();
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO user) throws SingleErrorResponse {
+    public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO user) {
         return ResponseEntity.status(200).body(service.login(user));
     }
 
     @GetMapping(path = "/me")
-    public ResponseEntity<UserDTO> get() throws SingleErrorResponse {
+    public ResponseEntity<UserDTO> get() {
         return ResponseEntity.status(200).body(service.getMe());
     }
 }

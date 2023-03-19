@@ -1,5 +1,7 @@
 package it.academy.productservice.services;
 
+import it.academy.productservice.audit.annotations.Audit;
+import it.academy.productservice.audit.enums.EssenceType;
 import it.academy.productservice.core.exceptions.SingleErrorResponse;
 import it.academy.productservice.core.nutrition.dtos.RecipeDTO;
 import it.academy.productservice.core.nutrition.dtos.RecipeForCUDTO;
@@ -27,11 +29,14 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public void add(RecipeForCUDTO recipe) throws SingleErrorResponse {
+    @Audit(message = "create", essence = EssenceType.RECIPE)
+    public UUID add(RecipeForCUDTO recipe) {
         RecipeEntity entity = converter.convertToRecipeEntity(recipe);
+        entity.setUuid(UUID.randomUUID());
         entity.setDtCreate(Instant.now());
         entity.setDtUpdate(Instant.now());
         repository.save(entity);
+        return entity.getUuid();
     }
 
     @Override
@@ -40,8 +45,8 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public void update(UUID uuid, Instant dtUpdate, RecipeForCUDTO recipe)
-            throws SingleErrorResponse {
+    @Audit(message = "update", essence = EssenceType.RECIPE)
+    public UUID update(UUID uuid, Instant dtUpdate, RecipeForCUDTO recipe) {
         RecipeEntity entity = repository.findById(uuid).orElseThrow(() ->
                 new SingleErrorResponse("error",
                         "recipe with this id: " + uuid + " not found"));
@@ -53,6 +58,7 @@ public class RecipeService implements IRecipeService {
         entity.setComposition(newEntity.getComposition());
         entity.setTitle(newEntity.getTitle());
         repository.save(entity);
+        return uuid;
     }
 
 

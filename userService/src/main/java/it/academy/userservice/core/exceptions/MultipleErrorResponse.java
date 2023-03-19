@@ -1,6 +1,5 @@
 package it.academy.userservice.core.exceptions;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -8,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonPropertyOrder({"logref", "errors"})
-@JsonIgnoreProperties(value = {"cause", "localizedMessage", "stackTrace", "suppressed", "message"})
-public class MultipleErrorResponse extends Exception {
+public class MultipleErrorResponse {
     @JsonProperty(value = "logref")
     private String logref;
     @JsonProperty(value = "errors")

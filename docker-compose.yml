@@ -1,5 +1,6 @@
 version: '3.5'
 services:
+#databases
   pgadmin:
     build: pgadmin
     image: fitness_pgadmin:1.0.0
@@ -30,11 +31,43 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+  audit_db:
+    build: auditDB
+    image: fitness_audit_db:1.0.0
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+  
+  
   swagger-ui:
     build: swagger-ui
     image: fitness_swagger-ui:1.0.0
     ports:
       - "81:8080"
+  #for kafka    
+   zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1   
+  #microservices    
   userService:
     build: userService
     image: fitness_user_service:1.0.0
@@ -46,6 +79,7 @@ services:
       - TOKEN_JWTISSUER=ITAcademy
       - EMAIL_SENDURL=http://mailService:8080/send
       - EMAIL_VERIFYURL=http://mailService:8080/verification
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=#########
   productService:
     build: productService
     image: fitness_product_service:1.0.0
@@ -56,6 +90,7 @@ services:
       - TOKEN_JWTSECRET=secret
       - TOKEN_JWTISSUER=ITAcademy
       - USERDETAILSERVICE_URL=http://userService:8080/users/userDetails/mail/
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=#########
   mailService:
     build: mailService
     image: fitness_mail_service:1.0.0
@@ -68,7 +103,14 @@ services:
       - EMAIL_FROMADDRESS=sharam.artur@gmail.com
       - EMAIL_URL=http://localhost/api/v1/users/verification
       - EMAIL_SUBJECT=Fitness Studio| Verify account
-      
+  auditService:
+    build: auditService
+    image: fitness_audit_service:1.0.0
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://mail_db:5432/
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=#########
   proxy:
     build: proxy
     image: fitness_image:1.0.0

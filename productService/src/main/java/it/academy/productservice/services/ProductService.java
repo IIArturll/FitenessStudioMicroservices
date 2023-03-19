@@ -1,5 +1,7 @@
 package it.academy.productservice.services;
 
+import it.academy.productservice.audit.annotations.Audit;
+import it.academy.productservice.audit.enums.EssenceType;
 import it.academy.productservice.core.exceptions.SingleErrorResponse;
 import it.academy.productservice.core.nutrition.dtos.ProductDTO;
 import it.academy.productservice.core.nutrition.mappers.ProductConverter;
@@ -24,11 +26,14 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void add(ProductDTO product) {
+    @Audit(message = "create", essence = EssenceType.PRODUCT)
+    public UUID add(ProductDTO product) {
         ProductEntity productEntity = converter.convertToEntity(product);
+        productEntity.setUuid(UUID.randomUUID());
         productEntity.setDtCreate(Instant.now());
         productEntity.setDtUpdate(Instant.now());
         repository.save(productEntity);
+        return productEntity.getUuid();
     }
 
     @Override
@@ -37,7 +42,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void update(UUID uuid, Instant dtUpdate, ProductDTO product) throws SingleErrorResponse {
+    @Audit(message = "update", essence = EssenceType.PRODUCT)
+    public UUID update(UUID uuid, Instant dtUpdate, ProductDTO product) {
         ProductEntity productEntity = repository.findById(uuid).orElseThrow(() ->
                 new SingleErrorResponse("error", "there is no product with this id : " + uuid));
         if (productEntity.getDtUpdate().toEpochMilli() != dtUpdate.toEpochMilli()) {
@@ -50,10 +56,11 @@ public class ProductService implements IProductService {
         productEntity.setFats(product.getFats());
         productEntity.setCarbohydrates(product.getCarbohydrates());
         repository.save(productEntity);
+        return uuid;
     }
 
     @Override
-    public ProductEntity find(UUID uuid) throws SingleErrorResponse {
+    public ProductEntity find(UUID uuid) {
         return repository.findById(uuid).orElseThrow(() ->
                 new SingleErrorResponse("error", "there is no product with this id : " + uuid));
     }

@@ -1,6 +1,5 @@
 package it.academy.productservice.controllers;
 
-import it.academy.productservice.core.exceptions.SingleErrorResponse;
 import it.academy.productservice.core.nutrition.dtos.ProductDTO;
 import it.academy.productservice.services.api.IProductService;
 import jakarta.validation.Valid;
@@ -35,7 +34,7 @@ public class ProductController {
     @PutMapping("/{uuid}/dt_update/{dt_update}")
     public ResponseEntity<?>update(@PathVariable(name = "uuid")UUID uuid,
                                    @PathVariable(name = "dt_update") Instant dtUpdate,
-                                   @Valid @RequestBody ProductDTO productDTO) throws SingleErrorResponse {
+                                   @Valid @RequestBody ProductDTO productDTO) {
         service.update(uuid,dtUpdate,productDTO);
         return ResponseEntity.status(200).build();
     }

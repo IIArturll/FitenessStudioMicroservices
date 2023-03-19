@@ -1,6 +1,5 @@
 package it.academy.userservice.services.api;
 
-import it.academy.userservice.core.exceptions.SingleErrorResponse;
 import it.academy.userservice.core.user.dtos.UserCreateDTO;
 import it.academy.userservice.core.user.dtos.UserDTO;
 import org.springframework.data.domain.Page;
@@ -11,11 +10,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 public interface IUserService {
-    void create(UserCreateDTO user);
+    UUID create(UserCreateDTO user);
 
-    UserDTO get(UUID uuid) throws SingleErrorResponse;
+    UserDTO get(UUID uuid);
 
-    void update(UUID uuid, Instant dtUpdate, UserCreateDTO user) throws SingleErrorResponse;
+    UUID update(UUID uuid, Instant dtUpdate, UserCreateDTO user);
 
     Page<UserDTO> getPage(Pageable pageable);
 

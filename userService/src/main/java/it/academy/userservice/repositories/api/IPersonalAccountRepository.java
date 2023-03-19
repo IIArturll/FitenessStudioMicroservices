@@ -10,6 +10,8 @@ import java.util.UUID;
 public interface IPersonalAccountRepository extends Repository<UserEntity, UUID> {
     Optional<UserEntity> findByMail(String mail);
 
+    boolean existsByMail(String mail);
+
     void save(UserEntity entity);
 
 }

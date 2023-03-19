@@ -1,6 +1,5 @@
 package it.academy.productservice.controllers;
 
-import it.academy.productservice.core.exceptions.SingleErrorResponse;
 import it.academy.productservice.core.nutrition.dtos.RecipeDTO;
 import it.academy.productservice.core.nutrition.dtos.RecipeForCUDTO;
 import it.academy.productservice.services.api.IRecipeService;
@@ -24,7 +23,7 @@ public class RecipeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@Valid @RequestBody RecipeForCUDTO recipe) throws SingleErrorResponse {
+    public ResponseEntity<?> add(@Valid @RequestBody RecipeForCUDTO recipe) {
         service.add(recipe);
         return ResponseEntity.status(201).build();
     }
@@ -37,7 +36,7 @@ public class RecipeController {
     @PutMapping(value = "/{uuid}/dt_update/{dt_update}")
     public ResponseEntity<?> update(@PathVariable("uuid") UUID uuid,
                                     @PathVariable("dt_update") Instant dtUpdate,
-                                    @Valid @RequestBody RecipeForCUDTO recipe) throws SingleErrorResponse {
+                                    @Valid @RequestBody RecipeForCUDTO recipe) {
         service.update(uuid, dtUpdate, recipe);
         return ResponseEntity.status(200).build();
     }

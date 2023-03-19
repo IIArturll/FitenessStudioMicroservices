@@ -2,11 +2,9 @@ package it.academy.productservice.security;
 
 import io.jsonwebtoken.*;
 import it.academy.productservice.core.properties.JwtProperty;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class JwtTokenUtil {
@@ -17,20 +15,6 @@ public class JwtTokenUtil {
         this.jwtProperty = jwtProperty;
     }
 
-    public String generateAccessToken(UserDetails user) {
-        return generateAccessToken(user.getUsername());
-    }
-
-    public String generateAccessToken(String name) {
-        return Jwts.builder()
-                .setSubject(name)
-                .setIssuer(jwtProperty.getJwtIssuer())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
-                .signWith(SignatureAlgorithm.HS512, jwtProperty.getJwtSecret())
-                .compact();
-    }
-
     public String getUsername(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtProperty.getJwtSecret())
@@ -38,6 +22,31 @@ public class JwtTokenUtil {
                 .getBody();
 
         return claims.getSubject();
+    }
+
+    public String getUserRole(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtProperty.getJwtSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("role").toString();
+    }
+
+
+    public String getFio(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtProperty.getJwtSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("fio").toString();
+    }
+
+    public String getUserUUID(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtProperty.getJwtSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("uuid").toString();
     }
 
     public Date getExpirationDate(String token) {

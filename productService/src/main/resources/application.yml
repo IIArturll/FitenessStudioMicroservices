@@ -1,14 +1,17 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: <database_username>
-    password: <database_password>
-    url: <database_url>
-
+    username: postgres #<database_username>
+    password: 1 #<database_password>
+    url: jdbc:postgresql://localhost:5432/db #<database_url>
+  kafka:
+    bootstrap-servers: artur:9092
 
 token:
-  jwtSecret: <secret>
-  jwtIssuer: <issuer>
+  jwtSecret: secret #<secret>
+  jwtIssuer: ITAcademy #<issuer>
 
 userdetailservice:
-  url: <url>
+  url: http://localhost:8080/users/userDetails/mail/
+server:
+  port: 8090

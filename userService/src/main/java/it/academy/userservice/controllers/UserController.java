@@ -1,6 +1,5 @@
 package it.academy.userservice.controllers;
 
-import it.academy.userservice.core.exceptions.SingleErrorResponse;
 import it.academy.userservice.core.user.dtos.UserCreateDTO;
 import it.academy.userservice.core.user.dtos.UserDTO;
 import it.academy.userservice.services.api.IUserService;
@@ -30,14 +29,14 @@ public class UserController {
     }
 
     @GetMapping(path = "/{uuid}")
-    public ResponseEntity<UserDTO> get(@PathVariable("uuid") UUID uuid) throws SingleErrorResponse {
+    public ResponseEntity<UserDTO> get(@PathVariable("uuid") UUID uuid) {
         return ResponseEntity.status(200).body(service.get(uuid));
     }
 
     @PutMapping(path = "/{uuid}/dt_update/{dt_update}")
     public ResponseEntity<?> update(@PathVariable("uuid") UUID uuid,
                                     @PathVariable("dt_update") Instant dtUpdate,
-                                    @Valid @RequestBody UserCreateDTO user) throws SingleErrorResponse {
+                                    @Valid @RequestBody UserCreateDTO user) {
         service.update(uuid, dtUpdate, user);
         return ResponseEntity.status(200).build();
     }

@@ -12,7 +12,13 @@ import java.util.List;
         "uuid",
         "dt_create",
         "dt_update",
-        ""
+        "title",
+        "composition",
+        "weight",
+        "calories",
+        "proteins",
+        "fats",
+        "carbohydrates"
 })
 public class RecipeDTO extends BaseEssence {
     @NotBlank

@@ -2,6 +2,8 @@ package it.academy.userservice.security;
 
 import io.jsonwebtoken.*;
 import it.academy.userservice.core.properties.JwtProperty;
+import it.academy.userservice.core.user.dtos.MyUserDetails;
+import it.academy.userservice.core.user.dtos.enums.UserRole;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +18,17 @@ public class JwtTokenUtil {
         this.jwtProperty = jwtProperty;
     }
 
-    public String generateAccessToken(UserDetails user) {
-        return generateAccessToken(user.getUsername());
+    public String generateAccessToken(MyUserDetails user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuer(jwtProperty.getJwtIssuer())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
+                .claim("uuid", user.getUuid())
+                .claim("fio", user.getFio())
+                .claim("role", user.getRole().name())
+                .signWith(SignatureAlgorithm.HS512, jwtProperty.getJwtSecret())
+                .compact();
     }
 
     public String generateAccessToken(String name) {
@@ -37,6 +48,31 @@ public class JwtTokenUtil {
                 .getBody();
 
         return claims.getSubject();
+    }
+
+    public String getUserRole(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtProperty.getJwtSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("role").toString();
+    }
+
+
+    public String getFio(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtProperty.getJwtSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("fio").toString();
+    }
+
+    public String getUserUUID(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtProperty.getJwtSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("uuid").toString();
     }
 
     public Date getExpirationDate(String token) {
