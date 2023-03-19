@@ -40,7 +40,8 @@ services:
   swagger-ui:
     build: swagger-ui
     image: fitness_swagger-ui:1.0.0
-    
+    ports:
+      - "81:8080"
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
@@ -71,7 +72,7 @@ services:
       - TOKEN_JWTISSUER=ITAcademy
       - EMAIL_SENDURL=http://mailService:8080/send
       - EMAIL_VERIFYURL=http://mailService:8080/verification
-      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:29092
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
   productService:
     build: productService
     image: fitness_product_service:1.0.0
@@ -82,7 +83,7 @@ services:
       - TOKEN_JWTSECRET=secret
       - TOKEN_JWTISSUER=ITAcademy
       - USERDETAILSERVICE_URL=http://userService:8080/users/userDetails/mail/
-      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:29092
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
   mailService:
     build: mailService
     image: fitness_mail_service:1.0.0
@@ -99,7 +100,7 @@ services:
     build: auditService
     image: fitness_audit_service:1.0.0
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://mail_db:5432/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://audit_db:5432/
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
@@ -107,4 +108,4 @@ services:
     build: proxy
     image: fitness_image:1.0.0
     ports:
-      - "9999:80"
+      - "80:80"
