@@ -37,7 +37,7 @@ public class AuditAspect {
     @AfterReturning(value = "isAudit(audit)", argNames = "audit,uuid", returning = "uuid")
     public void send(Audit audit, UUID uuid) {
         AuditUserDTO auditUserDTO = new AuditUserDTO();
-        if (audit.message().contains("registration") && audit.message().contains("verification")) {
+        if (audit.message().contains("registration") || audit.message().contains("verification")) {
             auditUserDTO.setUuid(applicationUUID);
             auditUserDTO.setFio("system");
             auditUserDTO.setMail("system");
