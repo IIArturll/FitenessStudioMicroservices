@@ -5,11 +5,13 @@ import it.academy.userservice.core.user.dtos.UserDTO;
 import it.academy.userservice.core.user.dtos.UserLoginDTO;
 import it.academy.userservice.core.user.dtos.UserRegistrationDTO;
 
+import java.util.UUID;
+
 public interface IPersonalAccountService {
 
-    void register(UserRegistrationDTO user);
+    UUID register(UserRegistrationDTO user);
 
-    void verified(String code, String mail);
+    UUID verified(String code, String mail);
 
     String login(UserLoginDTO user);
 

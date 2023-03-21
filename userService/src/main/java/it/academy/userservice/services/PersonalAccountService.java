@@ -53,7 +53,7 @@ public class PersonalAccountService implements IPersonalAccountService {
 
     @Override
     @Audit(message = "registration")
-    public void register(UserRegistrationDTO user) {
+    public UUID register(UserRegistrationDTO user) {
         if (repository.existsByMail(user.getMail())) {
             throw new SingleErrorResponse("error", "user with this mail already exist");
         }
@@ -63,11 +63,12 @@ public class PersonalAccountService implements IPersonalAccountService {
         entity.setDtUpdate(Instant.now());
         repository.save(entity);
         CompletableFuture.runAsync(() -> mailService.send(user.getMail()));
+        return entity.getUuid();
     }
 
     @Override
     @Audit(message = "verification")
-    public void verified(String code, String mail) {
+    public UUID verified(String code, String mail) {
         UserEntity user = repository.findByMail(mail).orElseThrow(() ->
                 new SingleErrorResponse("error", "user with this mail: " + mail
                         + " not found"));
@@ -78,6 +79,7 @@ public class PersonalAccountService implements IPersonalAccountService {
         } else {
             throw new SingleErrorResponse("error", "invalid verification code");
         }
+        return user.getUuid();
     }
 
     @Override
