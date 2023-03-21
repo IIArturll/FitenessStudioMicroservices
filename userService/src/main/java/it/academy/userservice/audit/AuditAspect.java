@@ -41,7 +41,7 @@ public class AuditAspect {
             auditUserDTO.setUuid(applicationUUID);
             auditUserDTO.setFio("system");
             auditUserDTO.setMail("system");
-            auditUserDTO.setRole(UserRole.USER);
+            auditUserDTO.setRole(UserRole.ADMIN);
         } else {
             MyUserDetails user = (MyUserDetails) userHolder.getUser();
             auditUserDTO.setUuid(user.getUuid());
