@@ -12,7 +12,6 @@ import java.util.UUID;
 @Table(name = "product", schema = "fitness")
 public class ProductEntity {
     @Id()
-    @GeneratedValue
     @Column(name = "id")
     private UUID uuid;
     @Column(name = "dt_create")

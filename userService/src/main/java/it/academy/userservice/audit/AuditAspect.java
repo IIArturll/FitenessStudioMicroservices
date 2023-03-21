@@ -5,6 +5,7 @@ import it.academy.userservice.audit.dtos.AuditDTO;
 import it.academy.userservice.audit.dtos.AuditUserDTO;
 import it.academy.userservice.audit.enums.EssenceType;
 import it.academy.userservice.core.user.dtos.MyUserDetails;
+import it.academy.userservice.core.user.dtos.enums.UserRole;
 import it.academy.userservice.security.UserHolder;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class AuditAspect {
 
     private final UserHolder userHolder;
+    private final UUID applicationUUID = UUID.fromString("9ef2810c-0f1e-49cf-b6fb-09a4a9c8c6df");
     KafkaTemplate<String, AuditDTO> kafkaTemplate;
 
     public AuditAspect(UserHolder userHolder, KafkaTemplate<String, AuditDTO> kafkaTemplate) {
@@ -32,22 +34,28 @@ public class AuditAspect {
     }
 
 
-    @AfterReturning(value = "isAudit(audit)",argNames = "audit,uuid", returning = "uuid")
-    public void send(Audit audit,UUID uuid) {
-        MyUserDetails user = (MyUserDetails) userHolder.getUser();
-        AuditUserDTO userDTO = new AuditUserDTO();
-        userDTO.setUuid(user.getUuid());
-        userDTO.setMail(user.getMail());
-        userDTO.setFio(user.getFio());
-        userDTO.setRole(user.getRole());
-
+    @AfterReturning(value = "isAudit(audit)", argNames = "audit,uuid", returning = "uuid")
+    public void send(Audit audit, UUID uuid) {
+        AuditUserDTO auditUserDTO = new AuditUserDTO();
+        if (audit.message().contains("registration") && audit.message().contains("verification")) {
+            auditUserDTO.setUuid(applicationUUID);
+            auditUserDTO.setFio("system");
+            auditUserDTO.setMail("system");
+            auditUserDTO.setRole(UserRole.USER);
+        } else {
+            MyUserDetails user = (MyUserDetails) userHolder.getUser();
+            auditUserDTO.setUuid(user.getUuid());
+            auditUserDTO.setMail(user.getMail());
+            auditUserDTO.setFio(user.getFio());
+            auditUserDTO.setRole(user.getRole());
+        }
         AuditDTO auditDTO = new AuditDTO();
         auditDTO.setUuid(UUID.randomUUID());
         auditDTO.setDtCreate(Instant.now());
-        auditDTO.setUser(userDTO);
+        auditDTO.setUser(auditUserDTO);
         auditDTO.setText(audit.message());
         auditDTO.setType(EssenceType.USER);
         auditDTO.setId(uuid.toString());
-        kafkaTemplate.send("audit",auditDTO);
+        kafkaTemplate.send("audit", auditDTO);
     }
 }

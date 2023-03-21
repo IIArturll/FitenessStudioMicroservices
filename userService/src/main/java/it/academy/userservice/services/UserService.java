@@ -5,6 +5,7 @@ import it.academy.userservice.core.exceptions.SingleErrorResponse;
 import it.academy.userservice.core.user.dtos.MyUserDetails;
 import it.academy.userservice.core.user.dtos.UserCreateDTO;
 import it.academy.userservice.core.user.dtos.UserDTO;
+import it.academy.userservice.core.user.dtos.enums.UserStatus;
 import it.academy.userservice.core.user.mappers.UserConverter;
 import it.academy.userservice.repositories.api.IUserRepository;
 import it.academy.userservice.repositories.entity.UserEntity;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class UserService implements IUserService {
@@ -50,7 +52,9 @@ public class UserService implements IUserService {
         entity.setDtCreate(Instant.now());
         entity.setDtUpdate(Instant.now());
         repository.save(entity);
-        //CompletableFuture.runAsync(() -> mailService.send(entity.getMail()));
+        if (user.getStatus() == UserStatus.WAITING_ACTIVATION) {
+            CompletableFuture.runAsync(() -> mailService.send(entity.getMail()));
+        }
         return uuid;
     }
 

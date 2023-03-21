@@ -1,6 +1,7 @@
 package it.academy.userservice.services;
 
 
+import it.academy.userservice.audit.annotations.Audit;
 import it.academy.userservice.core.exceptions.SingleErrorResponse;
 import it.academy.userservice.core.user.dtos.MyUserDetails;
 import it.academy.userservice.core.user.dtos.UserDTO;
@@ -51,6 +52,7 @@ public class PersonalAccountService implements IPersonalAccountService {
     }
 
     @Override
+    @Audit(message = "registration")
     public void register(UserRegistrationDTO user) {
         if (repository.existsByMail(user.getMail())) {
             throw new SingleErrorResponse("error", "user with this mail already exist");
@@ -64,6 +66,7 @@ public class PersonalAccountService implements IPersonalAccountService {
     }
 
     @Override
+    @Audit(message = "verification")
     public void verified(String code, String mail) {
         UserEntity user = repository.findByMail(mail).orElseThrow(() ->
                 new SingleErrorResponse("error", "user with this mail: " + mail
